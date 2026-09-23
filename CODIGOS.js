@@ -12,20 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnConectar = document.getElementById('btnConectar');
     
     if (btnConectar) {
-        btnConectar.addEventListener('click', ConectarSupabase);
+        btnConectar.addEventListener('click', conectarSupabase);
     } else {
         console.error("No se encontró el botón btnConectar en el HTML");
     }
     const btnBuscar = document.getElementById('btnBuscar');
     if (btnBuscar) {
-        btnBuscar.addEventListener('click', BuscarCategoria);
+        btnBuscar.addEventListener('click', buscarCategoria);
     } else {
         console.error("No se encontró el botón btnBuscar en el HTML");
     }
 });
 
 // 4. Función que se ejecuta al hacer clic en CONECTAR
-function ConectarSupabase() {
+function conectarSupabase() {
     try {
         // Si aún no se ha creado el cliente, lo creamos
         if (!supabaseClient) {
@@ -34,11 +34,14 @@ function ConectarSupabase() {
         
         // Si se crea correctamente, mostramos el mensaje
         alert("CONEXIÓN EXITOSA");
-        console.log("Cliente Supabase inicializado correctamente:", supabaseClient);
+        console.log("Cliente Supabase inicializado correctamente:", supabaseClient
+        );
         
     } catch (error) {
         alert("ERROR DE CONEXIÓN");
-        console.error("Detalles del error:", error);
+        console.error("Detalles del error:", error
+        
+            );
     }
 
 async function BuscarCategoria() {
