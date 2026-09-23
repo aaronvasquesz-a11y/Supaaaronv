@@ -12,20 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnConectar = document.getElementById('btnConectar');
     
     if (btnConectar) {
-        btnConectar.addEventListener('click', conectarSupabase);
+        btnConectar.addEventListener('click', ConectarSupabase);
     } else {
         console.error("No se encontró el botón btnConectar en el HTML");
     }
     const btnBuscar = document.getElementById('btnBuscar');
     if (btnBuscar) {
-        btnBuscar.addEventListener('click', buscarCategoria);
+        btnBuscar.addEventListener('click', BuscarCategoria);
     } else {
         console.error("No se encontró el botón btnBuscar en el HTML");
     }
 });
 
 // 4. Función que se ejecuta al hacer clic en CONECTAR
-function conectarSupabase() {
+function ConectarSupabase() {
     try {
         // Si aún no se ha creado el cliente, lo creamos
         if (!supabaseClient) {
@@ -41,7 +41,7 @@ function conectarSupabase() {
         console.error("Detalles del error:", error);
     }
 
-async function buscarCategoria() {
+async function BuscarCategoria() {
     // 1. Verificar que el cliente esté conectado
     if (!supabaseClient) {
         alert("Primero debes conectarte 🔌");
