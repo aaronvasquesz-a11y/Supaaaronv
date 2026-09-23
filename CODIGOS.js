@@ -1,30 +1,21 @@
 // 1. Tus credenciales
 const supabaseUrl = 'https://pmugozxkgtwgtzlecywg.supabase.co';
-const supabaseKey = 'sb_publishable_Ord69_ejm-SgTHGXdNed9w_MD7tvggO';
+const supabaseKey ='sb_publishable_Ord69_ejm-SgTHGXdNed9w_MD7tvggO';
 
-// 2. Cliente global
+// 2. Creamos el cliente UNA SOLA VEZ y de forma global
 let supabaseClient = null;
 
-// 3. Esperar a que cargue el DOM
+// 3. Esperamos a que el HTML esté cargado antes de buscar el botón
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar Supabase al cargar la página
-    try {
-        if (typeof supabase !== 'undefined') {
-            supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-            console.log("Supabase listo para usarse");
-        } else {
-            console.error("La librería de Supabase no se ha cargado en el HTML.");
-        }
-    } catch (err) {
-        console.error("Error al inicializar Supabase:", err);
-    }
-
-    // Eventos de los botones
+    
+    // Asignamos el evento click al botón CONECTAR
     const btnConectar = document.getElementById('btnConectar');
+    
     if (btnConectar) {
         btnConectar.addEventListener('click', conectarSupabase);
+    } else {
+        console.error("No se encontró el botón btnConectar en el HTML");
     }
-
     const btnBuscar = document.getElementById('btnBuscar');
     if (btnBuscar) {
         btnBuscar.addEventListener('click', buscarCategoria);
@@ -33,58 +24,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 4. Función de conexión manual (Opcional)
+// 4. Función que se ejecuta al hacer clic en CONECTAR
 function conectarSupabase() {
     try {
+        // Si aún no se ha creado el cliente, lo creamos
         if (!supabaseClient) {
             supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
         }
+        
+        // Si se crea correctamente, mostramos el mensaje
         alert("CONEXIÓN EXITOSA");
-        console.log("Cliente Supabase inicializado:", supabaseClient);
+        console.log("Cliente Supabase inicializado correctamente:", supabaseClient);
+        
     } catch (error) {
         alert("ERROR DE CONEXIÓN");
         console.error("Detalles del error:", error);
     }
-} // <-- AQUÍ FALTABA ESTA LLAVE DE CIERRE
 
-// 5. Función para buscar categoría
 async function buscarCategoria() {
+    // 1. Verificar que el cliente esté conectado
     if (!supabaseClient) {
-        alert("El cliente de Supabase no está listo 🔌");
+        alert("Primero debes conectarte 🔌");
         return;
     }
 
+    // 2. Obtener los valores del formulario
     const id = document.getElementById('id_categoria').value.trim();
     const nombre = document.getElementById('nombre_categoria').value.trim();
 
+    // 3. Validar que al menos uno esté lleno
     if (!id && !nombre) {
         alert("Ingresa un ID o un Nombre para buscar ⚠️");
         return;
     }
 
     try {
+        // 4. Construir la consulta base
         let query = supabaseClient.from('categorias').select('*');
 
+        // 5. Filtrar según lo que el usuario escribió
         if (id) {
             query = query.eq('id_categoria', id);
         }
         if (nombre) {
-            query = query.ilike('nombre', `%${nombre}%`);
+            query = query.ilike('nombre', `%${nombre}%`); // 'nombre' es el campo real en Supabase
         }
 
+        // 6. Ejecutar la consulta
         const { data, error } = await query;
 
         if (error) throw error;
 
+        // 7. Si no hay resultados
         if (!data || data.length === 0) {
             alert("No se encontró ninguna categoría ❌");
             return;
         }
 
-        // Mostrar resultados en los inputs
-        document.getElementById('id_categoria').value = data[0].id_categoria ?? '';
-        document.getElementById('nombre_categoria').value = data[0].nombre ?? '';
-        document.getElementById('estado').value = data[0].estado ?? '';
+        // 8. Mostrar el primer resultado en el formulario
+        document.getElementById('id_categoria').value = data[0].id_categoria;
+        document.getElementById('nombre_categoria').value = data[0].nombre;
+        document.getElementById('estado').value = data[0].estado;
 
         alert(`✅ Se encontraron ${data.length} resultado(s).`);
 
