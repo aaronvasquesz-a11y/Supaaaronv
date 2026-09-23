@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnConectar = document.getElementById('btnConectar');
     
     if (btnConectar) {
-        btnConectar.addEventListener('click', conectarSupabase);
+        btnConectar.addEventListener('click', fConectarSupabase);
     } else {
         console.error("No se encontró el botón btnConectar en el HTML");
     }
