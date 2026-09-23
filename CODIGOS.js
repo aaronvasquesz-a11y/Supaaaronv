@@ -15,14 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
         btnConectar.addEventListener('click', conectarSupabase);
     } else {
         console.error("No se encontró el botón btnConectar en el HTML");
-    }
-    const btnBuscar = document.getElementById('btnBuscar');
+}
+
+
+//Asignamos el evento clic al botón BUSCAR
+const btnBuscar = document.getElementById('btnBuscar');
     if (btnBuscar) {
         btnBuscar.addEventListener('click', buscarCategoria);
     } else {
         console.error("No se encontró el botón btnBuscar en el HTML");
-    }
-});
+        }  
+    });
 
 // 4. Función que se ejecuta al hacer clic en CONECTAR
 function conectarSupabase() {
@@ -34,17 +37,15 @@ function conectarSupabase() {
         
         // Si se crea correctamente, mostramos el mensaje
         alert("CONEXIÓN EXITOSA");
-        console.log("Cliente Supabase inicializado correctamente:", supabaseClient
-        );
+        console.log("Cliente Supabase inicializado correctamente:", supabaseClient);
         
     } catch (error) {
         alert("ERROR DE CONEXIÓN");
-        console.error("Detalles del error:", error
-        
-            );
+        console.error("Detalles del error:", error);
     }
+}
 
-async function BuscarCategoria() {
+async function buscarCategoria() {
     // 1. Verificar que el cliente esté conectado
     if (!supabaseClient) {
         alert("Primero debes conectarte 🔌");
@@ -70,7 +71,7 @@ async function BuscarCategoria() {
             query = query.eq('id_categoria', id);
         }
         if (nombre) {
-            query = query.ilike('nombre', `%${nombre}%`); // 'nombre' es el campo real en Supabase
+            query = query.ilike('nombre', '%${nombre}%'); // 'nombre' es el campo real en Supabase
         }
 
         // 6. Ejecutar la consulta
@@ -89,7 +90,7 @@ async function BuscarCategoria() {
         document.getElementById('nombre_categoria').value = data[0].nombre;
         document.getElementById('estado').value = data[0].estado;
 
-        alert(`✅ Se encontraron ${data.length} resultado(s).`);
+        alert('✅ Se encontraron ${data.length} resultado(s).');
 
     } catch (error) {
         alert("Error al buscar ❌: " + error.message);
